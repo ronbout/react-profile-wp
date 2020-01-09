@@ -1,0 +1,28 @@
+// mixins
+//@import "../../../scss/mixins";
+
+.person-main {
+	text-align: center;
+	margin-top: 2em;
+}
+
+.person-setup {
+	//@include lg-form(15px);
+	font-size: 14px;
+	text-align: center;
+	width: 95%;
+	margin: 1em auto;
+
+	.person-form {
+		font-size: 14px;
+		background: white;
+		color: #212529;
+		padding: 2em 2em 1em;
+		width: 700px;
+		margin: 0 auto;
+	}
+
+	label.col-form-label.label-right {
+		text-align: right;
+	}
+}

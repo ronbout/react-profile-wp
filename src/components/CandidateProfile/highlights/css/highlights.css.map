@@ -1,0 +1,9 @@
+{
+    "version": 3,
+    "mappings": "AAAA,AAAA,gBAAgB,AAAA,sBAAsB,CAAC;EACtC,KAAK,EAAE,KAAK;CACZ",
+    "sources": [
+        "../scss/highlights.scss"
+    ],
+    "names": [],
+    "file": "highlights.css"
+}

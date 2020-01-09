@@ -1,0 +1,25 @@
+.person-main {
+  text-align: center;
+  margin-top: 2em;
+}
+
+.person-setup {
+  font-size: 14px;
+  text-align: center;
+  width: 95%;
+  margin: 1em auto;
+}
+
+.person-setup .person-form {
+  font-size: 14px;
+  background: white;
+  color: #212529;
+  padding: 2em 2em 1em;
+  width: 700px;
+  margin: 0 auto;
+}
+
+.person-setup label.col-form-label.label-right {
+  text-align: right;
+}
+/*# sourceMappingURL=personSetup.css.map */

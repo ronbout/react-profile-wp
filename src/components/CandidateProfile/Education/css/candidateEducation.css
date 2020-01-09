@@ -1,0 +1,18 @@
+.candidate-education .candidate-education-detail {
+  min-height: 480px;
+  padding: 2em;
+}
+
+.candidate-education .button-section {
+  text-align: center;
+}
+
+.education-section {
+  margin: auto;
+  width: 95%;
+}
+
+.education-list {
+  padding: 2em 2em 1em;
+}
+/*# sourceMappingURL=candidateEducation.css.map */
