@@ -44,6 +44,44 @@
   background: gray;
 }
 
+/* form based css for use with material design inputs */
+.tsd-form-row {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -ms-flex-wrap: nowrap;
+      flex-wrap: nowrap;
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
+  margin-bottom: 0.5rem;
+}
+
+.tsd-form-row > div {
+  -webkit-box-flex: 1;
+      -ms-flex-positive: 1;
+          flex-grow: 1;
+  text-align: left;
+}
+
+.input-div {
+  margin: 0 8px;
+}
+
+.tsd-form-section {
+  width: 100%;
+}
+
+.tsd-form-section h2 {
+  text-align: left;
+  font-weight: bold;
+}
+
+.tsd-form-section .tsd-form-row {
+  width: 86%;
+  margin: 0 auto;
+}
+
 .candidate-profile {
   display: -webkit-box;
   display: -ms-flexbox;
@@ -58,10 +96,6 @@
   width: 1080px;
   margin: 2em auto;
   background-color: white;
-}
-
-.candidate-profile .md-panel-header .material-icons.md-icon {
-  font-size: 32px;
 }
 
 .candidate-profile tr:nth-child(even) {
@@ -89,6 +123,15 @@
 
 .profile-section .personal-info-display {
   text-align: center;
+  margin-top: 24px;
+}
+
+.profile-section .personal-info-display .pi-button {
+  margin-top: 12px;
+}
+
+.profile-section .personal-info-display .pi-button button {
+  min-width: 123px;
 }
 
 .pi-content {
@@ -102,6 +145,10 @@
 
 .pi-content > div {
   padding: 1em;
+}
+
+.pi-content .personal-form-container {
+  padding-top: 0;
 }
 
 .img-container {
@@ -167,27 +214,9 @@
   margin: 2em 0;
 }
 
-.slider-arrow {
-  border: 2px solid black;
-  padding: 5px 10px;
-  font-size: 24px;
-  border-radius: 50%;
-  cursor: pointer;
-}
-
 .profile-section-footer {
   width: 100%;
   text-align: center;
-}
-
-.slide-section {
-  overflow: hidden;
-  -webkit-transition-property: height;
-  transition-property: height;
-  -webkit-transition-duration: 0.5s;
-          transition-duration: 0.5s;
-  -webkit-transition-timing-function: ease-in-out;
-          transition-timing-function: ease-in-out;
 }
 
 .objective-form,
@@ -197,10 +226,9 @@
   text-align: center;
 }
 
-.objective-form textarea,
-.social-form textarea {
+.objective-form .textarea,
+.social-form .textarea {
   max-width: 800px;
-  margin: 1em 2em;
 }
 
 .os-footer,
@@ -209,6 +237,10 @@
 .edu-footer {
   margin-top: 1.5em;
   text-align: center;
+}
+
+.candidate-highlights {
+  padding: 0 2em 1em;
 }
 
 .candidate-highlights textarea {
@@ -227,7 +259,7 @@
 }
 
 .candidate-highlights .add-highlight {
-  padding: 1em;
+  padding: 0 1em 2em;
 }
 
 .candidate-highlights .add-highlight > div.row > div {
@@ -236,6 +268,10 @@
 
 .candidate-highlights .add-highlight textarea {
   margin-right: 8px;
+}
+
+.candidate-highlights .add-highlight .add-highlight-button {
+  padding-top: 68px;
 }
 
 .candidate-highlights .highlight-row {
@@ -266,12 +302,22 @@
   margin: 1em;
 }
 
-.objective-form,
-.candidate-highlights,
+.objective-form {
+  padding: 0 2em 1em;
+}
+
+.objective-form .md-text-field-container--multiline-block {
+  margin: 0;
+}
+
 .experience-form,
 .social-form {
   background: white;
   padding: 2em 2em 1em;
+}
+
+.social-form label {
+  left: 0;
 }
 
 button.btn-move i {

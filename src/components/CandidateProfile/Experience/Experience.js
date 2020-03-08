@@ -1,54 +1,44 @@
-import React, { useState, useEffect } from "react";
-import ProfileSectionHeader from "../ProfileSectionHeader";
+/* Experience.js */
+import React, { useContext } from "react";
 import CandidateExperienceContainer from "./CandidateExperienceContainer";
-import { objCopy } from "assets/js/library.js";
-import makeExpansion from "styledComponents/makeExpansion";
+import MakeExpansion from "components/expansionPanels/MakeExpansion";
+import { CompObjContext } from "components/CandidateProfile/CompObjContext";
 import { isEqual } from "lodash";
 
-const ExperienceDiv = ({ experience, candId, handleExperienceChange }) => {
+const ExperienceDiv = ({ experience, candId }) => {
+	const { dispatch } = useContext(CompObjContext);
+
+	const handleSubmit = experience => {
+		dispatch({
+			type: "UPDATE_CAND",
+			payload: { experience }
+		});
+	};
+
 	return (
 		<section>
 			<CandidateExperienceContainer
 				experience={experience}
 				candId={candId}
-				handleExperienceChange={handleExperienceChange}
+				handleSubmit={handleSubmit}
 			/>
 		</section>
 	);
 };
 
-const Experience = props => {
-	const [experience, setExperience] = useState(objCopy(props.experience));
+const ExpandExperienceDiv = MakeExpansion(
+	ExperienceDiv,
+	"Experience",
+	null,
+	false,
+	0,
+	"386px"
+);
 
-	// useEffect(() => {
-	// 	console.log("***  Experience rendered ***");
-	// });
-
-	useEffect(() => {
-		setExperience(objCopy(props.experience));
-	}, [props.experience]);
-
-	const header = () => {
-		return (
-			<ProfileSectionHeader
-				headerTitle="Experience"
-				profilePercentage="20"
-				profileSectionCompleted={true}
-			/>
-		);
-	};
-
-	const ExpandExperienceDiv = makeExpansion(
-		ExperienceDiv,
-		header,
-		null,
-		false,
-		0
-	);
-
+const Experience = ({ experience, candId }) => {
 	return (
 		<section className="Experience profile-section">
-			<ExpandExperienceDiv experience={experience} candId={props.candId} />
+			<ExpandExperienceDiv experience={experience} candId={candId} />
 		</section>
 	);
 };

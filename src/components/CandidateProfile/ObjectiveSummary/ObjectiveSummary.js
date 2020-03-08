@@ -1,19 +1,23 @@
 /* ObjectiveSummary.js */
-import React from "react";
-import ProfileSectionHeader from "../ProfileSectionHeader";
+import React, { useContext } from "react";
 import ObjectiveSummaryContainer from "./ObjectiveSummaryContainer";
-import makeExpansion from "styledComponents/makeExpansion";
+import MakeExpansion from "components/expansionPanels/MakeExpansion";
+import { CompObjContext } from "components/CandidateProfile/CompObjContext";
 import { isEqual } from "lodash";
 
 const ObjectiveSummaryDiv = ({
 	jobTitle,
 	objective,
 	executiveSummary,
-	candId,
-	handleUpdate
+	candId
 }) => {
+	const { dispatch } = useContext(CompObjContext);
 	const handleSubmit = ({ jobTitle, objective, executiveSummary }) => {
-		handleUpdate({ jobTitle, objective, executiveSummary });
+		// instead of passing info up, use dispatch
+		dispatch({
+			type: "UPDATE_CAND",
+			payload: { jobTitle, objective, executiveSummary }
+		});
 	};
 
 	return (
@@ -29,29 +33,21 @@ const ObjectiveSummaryDiv = ({
 	);
 };
 
+const ExpandObjectiveDiv = MakeExpansion(
+	ObjectiveSummaryDiv,
+	"Professional Info",
+	null,
+	false,
+	0,
+	"470px"
+);
+
 const ObjectiveSummary = ({
 	jobTitle,
 	objective,
 	executiveSummary,
-	candId,
-	handleUpdate
+	candId
 }) => {
-	// React.useEffect(() => {
-	// 	console.log("***  Objective Summary rendered ***");
-	// });
-
-	const header = () => {
-		return <ProfileSectionHeader headerTitle="Professional Info" />;
-	};
-
-	const ExpandObjectiveDiv = makeExpansion(
-		ObjectiveSummaryDiv,
-		header,
-		null,
-		false,
-		0
-	);
-
 	return (
 		<section className="objective-summary profile-section">
 			<ExpandObjectiveDiv
@@ -59,7 +55,6 @@ const ObjectiveSummary = ({
 				objective={objective}
 				executiveSummary={executiveSummary}
 				candId={candId}
-				handleUpdate={handleUpdate}
 			/>
 		</section>
 	);

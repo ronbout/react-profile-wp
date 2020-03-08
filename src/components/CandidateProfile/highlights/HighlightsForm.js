@@ -1,26 +1,31 @@
+/* HighlightsForm.js */
 import React from "react";
 import TextAreaBase from "styledComponents/TextAreaBase";
 import Button from "styledComponents/Button";
-import SkillList from "components/SkillSetup/SkillList";
 import HighlightsTable from "./HighlightsTable";
 
 const HighlightsForm = props => {
 	const {
 		actions,
 		highlights,
-		showSkillsFlag,
 		newHighlight,
-		editFlag,
-		editSkillNdx,
 		includeInSummary,
 		heading,
 		listingCallbacks,
-		skills,
 		candId,
-		tableHeight
+		tableHeight,
+		setAutoFocus = true
 	} = props;
 
 	const addHighlight = () => {
+		const handleKeyDown = ev => {
+			const key = ev.key;
+			if (key === "Enter") {
+				props.handleAddHighlight(newHighlight);
+				ev.preventDefault();
+			}
+		};
+
 		return (
 			<div className="add-highlight">
 				{heading && <h2>{heading}</h2>}
@@ -33,13 +38,14 @@ const HighlightsForm = props => {
 							maxLength={200}
 							name="newHighlight"
 							label="Enter a highlight and click Add"
-							autoFocus
+							autoFocus={setAutoFocus}
 							value={newHighlight}
 							onChange={props.handleOnChange}
+							onKeyDown={handleKeyDown}
 						/>
 					</div>
 					<div />
-					<div style={{ paddingTop: "20px" }}>
+					<div className="add-highlight-button">
 						<Button
 							type="button"
 							className="btn btn-info"
@@ -56,41 +62,16 @@ const HighlightsForm = props => {
 		);
 	};
 
-	// const highlightList = () => {
-	// 	const sortHighlights = highlights.sort((a, b) => a.sequence - b.sequence);
-	// 	// setup current parms for listing hoc
-	// 	const listingParms = {
-	// 		editFlag,
-	// 		editSkillNdx,
-	// 		includeSummaryButton: includeInSummary === true ? true : false
-	// 	};
-	// 	return (
-	// 		<div className="highlight-list justify-content-center">
-	// 			<ListingHoc
-	// 				data={sortHighlights}
-	// 				actions={actions}
-	// 				detailClassname="highlight-row"
-	// 				callBacks={listingCallbacks}
-	// 				parms={listingParms}
-	// 			>
-	// 				<HighlightDetail />
-	// 			</ListingHoc>
-	// 		</div>
-	// 	);
-	// };
-
 	const highlightList = () => {
 		const sortHighlights = highlights.sort((a, b) => a.sequence - b.sequence);
 		const listingParms = {
-			editFlag,
-			editSkillNdx,
 			includeSummaryButton: includeInSummary === true ? true : false
 		};
 		return (
 			<HighlightsTable
 				listingParms={listingParms}
 				highlightsData={sortHighlights}
-				actions={{ ...actions, skills: listingCallbacks.handleRowClick }}
+				actions={{ ...actions, include: listingCallbacks.handleIncludeSummary }}
 				handleSkillsChange={props.handleSkillsChange}
 				candId={candId}
 				tableHeight={tableHeight}
@@ -98,24 +79,10 @@ const HighlightsForm = props => {
 		);
 	};
 
-	const displaySkills = () => {
-		return (
-			<div className="skill-edit-list">
-				<SkillList
-					skills={skills}
-					editFlag={editFlag}
-					handleSkillsChange={props.handleSkillsChange}
-					candId={candId}
-				/>
-			</div>
-		);
-	};
-
 	return (
 		<section className="candidate-highlights candidate-tab-section">
 			{addHighlight()}
 			{highlights && highlightList()}
-			{false && showSkillsFlag && displaySkills()}
 		</section>
 	);
 };

@@ -1,5 +1,5 @@
 /* CandidateCertificationsContainer.js */
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import CandidateCertifications from "./CandidateCertifications";
 import Snackbar from "styledComponents/Snackbar";
 import Button from "styledComponents/Button";
@@ -29,12 +29,6 @@ const CandidateCertificationsContainer = props => {
 		skills: []
 	};
 
-	useEffect(() => {
-		setCertifications(
-			props.certifications ? objCopy(props.certifications) : []
-		);
-	}, [props.certifications]);
-
 	const addToast = (text, action, autoHide = true, timeout = null) => {
 		const toast = { text, action, autoHide, timeout };
 		setToast(toast);
@@ -57,10 +51,12 @@ const CandidateCertificationsContainer = props => {
 		if (result.error) {
 			console.log("fetch error: ", result);
 			addToast("An unknown error has occurred", "Close", false);
-			handleCancel();
+			return false;
 		} else {
 			addToast("Certifications have been updated");
 			setCertifications(certifications ? objCopy(certifications) : []);
+			props.handleSubmit(certifications);
+			return true;
 		}
 	};
 
@@ -75,9 +71,7 @@ const CandidateCertificationsContainer = props => {
 	const confirmedDelete = () => {
 		const tmp = objCopy(certifications.slice());
 		tmp.splice(delNdx, 1);
-		console.log("deleted certifications, if turned on: ", tmp);
 		updateCertifications(tmp);
-		//alert("not actually deleting certifications until later in testing");
 		hideDelDialog();
 	};
 
@@ -101,11 +95,12 @@ const CandidateCertificationsContainer = props => {
 		setEditNdx(false);
 	};
 
-	const handleSave = ed => {
+	const handleSave = async cert => {
 		const tmp = objCopy(certifications.slice());
-		tmp[editNdx] = ed;
+		tmp[editNdx] = cert;
 		updateCertifications(tmp);
-		handleCloseModal();
+		const tst = await updateCertifications(tmp);
+		tst && handleCloseModal();
 	};
 
 	const handleAddNewCertification = () => {
@@ -117,9 +112,9 @@ const CandidateCertificationsContainer = props => {
 
 	const handleCancel = () => {
 		setEditNdx(false);
-		setCertifications(
-			props.certifications ? objCopy(props.certifications) : []
-		);
+		// setCertifications(
+		// 	props.certifications ? objCopy(props.certifications) : []
+		// );
 	};
 
 	const actions = {
@@ -161,7 +156,7 @@ const CandidateCertificationsContainer = props => {
 					action={toast.action}
 					autohide={toast.autoHide}
 					timeout={toast.timeout}
-					closeCallBk={closeToast}
+					onDismiss={closeToast}
 				/>
 			)}
 		</React.Fragment>

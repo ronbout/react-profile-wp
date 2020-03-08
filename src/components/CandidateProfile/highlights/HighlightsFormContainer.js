@@ -1,22 +1,23 @@
+/* HighlightsFormContainer.js */
 import React, { useState, useReducer, useEffect } from "react";
 import HighlightsForm from "./HighlightsForm";
 import { highlightsReducer } from "./highlightsReducer";
-import DialogContainer from "styledComponents/DialogContainer";
-import Button from "styledComponents/Button";
+// import DialogContainer from "styledComponents/DialogContainer";
+// import Button from "styledComponents/Button";
 import { isEqual } from "lodash";
 
 const HighlightsFormContainer = props => {
-	//const [editFlag, setEditFlag] = useState(false);
 	const [highlights, dispatch] = useReducer(
 		highlightsReducer,
 		props.highlights
 	);
-	const [delNdx, setDelNdx] = useState(-1);
-	const [showSkillsFlag, setShowSkillsFlag] = useState(false);
+	// const [delNdx, setDelNdx] = useState(-1);
 	const [newHighlight, setNewHightlight] = useState("");
-	const [editSkillNdx, setEditSkillNdx] = useState("");
 	const [skills, setSkills] = useState([]);
-	const editFlag = true;
+
+	useEffect(() => {
+		dispatch({ type: "resetHighlights", highlights: props.highlights });
+	}, [props.highlights]);
 
 	useEffect(() => {
 		if (!isEqual(highlights, props.highlights)) passHighlightUp(highlights);
@@ -37,53 +38,38 @@ const HighlightsFormContainer = props => {
 		setNewHightlight("");
 	};
 
-	const handleDelHighlight = ndx => {
-		setDelNdx(ndx);
-	};
-
-	const hideDelDialog = () => {
-		setDelNdx(-1);
-	};
-
-	const confirmedDelete = () => {
+	const handleDelHighlight = delNdx => {
 		dispatch({ type: "delHighlight", delNdx });
-		// if the deleted highlight is the edit
-		// highlight, turn off edit mode
-		if (editSkillNdx === delNdx) {
-			setEditSkillNdx("");
-			setShowSkillsFlag(false);
-		}
-		hideDelDialog();
+		// setDelNdx(ndx);
 	};
 
-	const delDialogActions = [
-		{ secondary: true, children: "Cancel", onClick: hideDelDialog },
-		<Button
-			className="btn btn-danger"
-			variant="flat"
-			color="primary"
-			onClick={confirmedDelete}
-		>
-			Delete
-		</Button>
-	];
+	// const hideDelDialog = () => {
+	// 	setDelNdx(-1);
+	// };
+
+	// const confirmedDelete = () => {
+	// 	dispatch({ type: "delHighlight", delNdx });
+	// 	hideDelDialog();
+	// };
+
+	// const delDialogActions = [
+	// 	{ secondary: true, children: "Cancel", onClick: hideDelDialog },
+	// 	<Button
+	// 		className="btn btn-danger"
+	// 		variant="flat"
+	// 		color="primary"
+	// 		onClick={confirmedDelete}
+	// 	>
+	// 		Delete
+	// 	</Button>
+	// ];
 
 	const handleMoveHighlight = (ndx, newNdx) => {
 		dispatch({ type: "moveHighlight", ndx, newNdx });
-		// if highlight being moved is the edit highlight,
-		// update the edit ndx.
-		if (editSkillNdx === ndx) setEditSkillNdx(newNdx);
 	};
 
 	const handleEditHighlight = (ndx, val) => {
 		dispatch({ type: "editHighlight", ndx, editValue: val });
-	};
-
-	const handleRowClick = ndx => {
-		setShowSkillsFlag(true);
-		setEditSkillNdx(ndx);
-		setSkills(props.highlights[ndx].skills);
-		//if (editSkillNdx !== ndx) setEditFlag(false);
 	};
 
 	const handleSkillsChange = (newSkills, ndx) => {
@@ -104,8 +90,6 @@ const HighlightsFormContainer = props => {
 	};
 
 	const listingCallbacks = {
-		handleRowClick,
-		handleEditHighlight,
 		handleIncludeSummary
 	};
 
@@ -114,10 +98,7 @@ const HighlightsFormContainer = props => {
 			<HighlightsForm
 				actions={actions}
 				highlights={highlights}
-				showSkillsFlag={showSkillsFlag}
 				newHighlight={newHighlight}
-				editFlag={editFlag}
-				editSkillNdx={editSkillNdx}
 				includeInSummary={props.includeInSummary}
 				heading={props.heading}
 				listingCallbacks={listingCallbacks}
@@ -127,17 +108,20 @@ const HighlightsFormContainer = props => {
 				handleSkillsChange={handleSkillsChange}
 				candId={props.candId}
 				tableHeight={props.tableHeight || 360}
+				setAutoFocus={props.setAutoFocus}
 			/>
-			<DialogContainer
-				id="delete-dialog"
-				visible={delNdx >= 0}
-				onHide={hideDelDialog}
-				title="Delete Highlight"
-				actions={delDialogActions}
-			>
-				<p>You are going to delete Highlight # {delNdx + 1}.</p>
-				Are you sure?
-			</DialogContainer>
+			{/*false && (
+				<DialogContainer
+					id="delete-dialog"
+					visible={delNdx >= 0}
+					onHide={hideDelDialog}
+					title="Delete Highlight"
+					actions={delDialogActions}
+				>
+					<p>You are going to delete Highlight # {delNdx + 1}.</p>
+					Are you sure?
+				</DialogContainer>
+			)*/}
 		</React.Fragment>
 	);
 };

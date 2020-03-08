@@ -1,14 +1,20 @@
 /* Highlights.js */
-import React from "react";
-import ProfileSectionHeader from "../ProfileSectionHeader";
+import React, { useContext } from "react";
 import HighlightsContainer from "./HighlightsContainer";
-import makeExpansion from "styledComponents/makeExpansion";
+import MakeExpansion from "components/expansionPanels/MakeExpansion";
+import { CompObjContext } from "components/CandidateProfile/CompObjContext";
 import { isEqual } from "lodash";
 
-const HighlightsDiv = ({ highlights, candId, handleUpdate }) => {
+const HighlightsDiv = ({ highlights, candId }) => {
+	const { dispatch } = useContext(CompObjContext);
+
 	const handleSubmit = highlights => {
-		handleUpdate({ candidateHighlights: highlights });
+		dispatch({
+			type: "UPDATE_CAND",
+			payload: { candidateHighlights: highlights }
+		});
 	};
+
 	return (
 		<section>
 			<HighlightsContainer
@@ -20,34 +26,19 @@ const HighlightsDiv = ({ highlights, candId, handleUpdate }) => {
 	);
 };
 
-const Highlights = ({ highlights, candId, handleUpdate }) => {
-	// React.useEffect(() => {
-	// 	console.log("***  Highlights rendered ***");
-	// });
-	const header = () => {
-		return (
-			<ProfileSectionHeader
-				headerTitle="Career Highlights"
-				profilePercentage="20"
-				profileSectionCompleted={true}
-			/>
-		);
-	};
+const ExpandHighlightDiv = MakeExpansion(
+	HighlightsDiv,
+	"Career Highlights",
+	null,
+	false,
+	0,
+	"676px"
+);
 
-	const ExpandHighlightDiv = makeExpansion(
-		HighlightsDiv,
-		header,
-		null,
-		false,
-		0
-	);
+const Highlights = ({ highlights, candId }) => {
 	return (
 		<section className="highlights profile-section">
-			<ExpandHighlightDiv
-				highlights={highlights}
-				candId={candId}
-				handleUpdate={handleUpdate}
-			/>
+			<ExpandHighlightDiv highlights={highlights} candId={candId} />
 		</section>
 	);
 };

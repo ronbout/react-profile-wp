@@ -1,3 +1,4 @@
+/* PersonSetupContainer.js */
 import React, { Component } from "react";
 import { FormsProvider } from "components/forms/FormsContext";
 import PersonSetupForm from "./PersonSetupForm";
@@ -81,7 +82,7 @@ class PersonSetupContainer extends Component {
 		};
 		// need to know if this is a new skill or update
 		// (post vs put)
-		const id = this.state.formFields.id;
+		const id = personInfo.id;
 		const httpMethod = id ? "PUT" : "POST";
 		const endpoint = id ? `${API_PERSON}/${id}` : `${API_PERSON}`;
 
@@ -147,7 +148,7 @@ class PersonSetupContainer extends Component {
 	render() {
 		return (
 			<React.Fragment>
-				{!this.props.popup ? (
+				{!this.props.popup && !this.props.profile ? (
 					<h1 style={{ textAlign: "center", marginTop: "2rem" }}>
 						Person Setup
 					</h1>
@@ -176,7 +177,7 @@ class PersonSetupContainer extends Component {
 						action={this.state.toast.action}
 						autohide={this.state.toast.autoHide}
 						timeout={this.state.toast.timeout}
-						closeCallBk={this.closeToast}
+						onDismiss={this.closeToast}
 					/>
 				)}
 			</React.Fragment>

@@ -8,7 +8,7 @@ import {
 	TableRow,
 	TableColumn
 } from "styledComponents/DataTables";
-import KebabMenu from "./KebabMenu";
+import Button from "styledComponents/Button";
 import TableActions from "./TableActions";
 
 const columnStylePadding = { paddingRight: "14px", minWidth: "70px" };
@@ -24,6 +24,8 @@ const CandidateEducationTable = ({ education, actions, onAddClick }) => {
 						<TableColumn>School</TableColumn>
 						<TableColumn>Start Date</TableColumn>
 						<TableColumn>End Date</TableColumn>
+						<TableColumn>Edit</TableColumn>
+						<TableColumn>Delete</TableColumn>
 					</TableRow>
 				</TableHeader>
 				<TableBody>
@@ -37,12 +39,29 @@ const CandidateEducationTable = ({ education, actions, onAddClick }) => {
 									{ed.schoolName}
 								</TableColumn>
 								<TableColumn style={columnStylePadding}>
-									{ed.startDate || " "}
+									{ed.startDate.slice(0, 7) || " "}
 								</TableColumn>
 								<TableColumn style={columnStylePadding}>
-									{ed.endDate || " "}
+									{ed.endDate.slice(0, 7) || " "}
 								</TableColumn>
-								<KebabMenu ndx={ndx} actions={actions} />
+								<TableColumn style={{ paddingRight: "16px" }}>
+									<Button
+										variant="icon"
+										color="secondary"
+										onClick={() => actions.edit(ndx)}
+									>
+										edit
+									</Button>
+								</TableColumn>
+								<TableColumn style={{ paddingRight: "16px" }}>
+									<Button
+										variant="icon"
+										className="md-text--error"
+										onClick={() => actions.delete(ndx)}
+									>
+										delete
+									</Button>
+								</TableColumn>
 							</TableRow>
 						);
 					})}

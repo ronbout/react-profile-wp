@@ -1,5 +1,5 @@
 /* ObjectiveSummaryContainer.js */
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { FormsProvider } from "components/forms/FormsContext";
 import ObjectiveSummaryForm from "./ObjectiveSummaryForm";
 import dataFetch from "assets/js/dataFetch";
@@ -21,11 +21,11 @@ const ObjectiveSummaryContainer = ({
 	const [candObjective, setCandObjective] = useState(objective);
 	const [candSummary, setCandSummary] = useState(executiveSummary);
 
-	useEffect(() => {
-		setCandJobTitle(jobTitle);
-		setCandObjective(objective);
-		setCandSummary(executiveSummary);
-	}, [jobTitle, objective, executiveSummary]);
+	// useEffect(() => {
+	// 	setCandJobTitle(jobTitle);
+	// 	setCandObjective(objective);
+	// 	setCandSummary(executiveSummary);
+	// }, [jobTitle, objective, executiveSummary]);
 
 	const handleSubmit = formData => {
 		postObjective(formData);
@@ -47,12 +47,12 @@ const ObjectiveSummaryContainer = ({
 			console.log(result);
 			addToast("An unknown error occurred", "Close", false);
 		} else {
-			// setCandJobTitle(jobTitle);
-			// setCandObjective(objective);
-			// setCandSummary(executiveSummary);
 			handleUpdate({ jobTitle, objective, executiveSummary });
-			// const userMsg = "Job Title / Objective / Summary has been updated";
-			// addToast(userMsg);
+			setCandJobTitle(jobTitle);
+			setCandObjective(objective);
+			setCandSummary(executiveSummary);
+			const userMsg = "Professional Info has been updated";
+			addToast(userMsg);
 		}
 	};
 
@@ -83,7 +83,7 @@ const ObjectiveSummaryContainer = ({
 					action={toast.action}
 					autohide={toast.autoHide}
 					timeout={toast.timeout}
-					closeCallBk={closeToast}
+					onDismiss={closeToast}
 				/>
 			)}
 		</section>

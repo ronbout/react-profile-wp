@@ -1,21 +1,23 @@
+/* ProfileSectionHeader.js */
 import React from "react";
+import { FontIcon } from "styledComponents/FontIcon";
 
-const ProfileSectionHeader = props => {
+const ProfileSectionHeader = ({
+	headerTitle,
+	handleSlider,
+	sliderIcon = ""
+}) => {
 	return (
 		<div className="pi-header profile-section-header">
 			<span>
-				<h2>{props.headerTitle || "Section Header"}</h2>
+				<h2>{headerTitle || "Section Header"}</h2>
 			</span>
-			{/* (
-			<span>
-				<h2>({props.profilePercentage || 0}%)</h2>
-			</span>
-			<span>
-				<h2>
-					{props.profileSectionCompleted && <FontAwesomeIcon icon="check" />}
-				</h2>
-			</span>
-			)*/}
+
+			{sliderIcon && (
+				<span className="slider-arrow" onClick={handleSlider}>
+					<FontIcon>{sliderIcon}</FontIcon>
+				</span>
+			)}
 		</div>
 	);
 };

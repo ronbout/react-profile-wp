@@ -93,7 +93,7 @@ class CompanySetupContainer extends Component {
 		delete body.contactPerson;
 		// need to know if this is a new skill or update
 		// (post vs put)
-		const id = this.state.formFields.id;
+		const id = companyInfo.id;
 		const httpMethod = id ? "PUT" : "POST";
 		const endpoint = id ? `${API_COMPANY}/${id}` : `${API_COMPANY}`;
 
@@ -209,7 +209,7 @@ class CompanySetupContainer extends Component {
 						action={this.state.toast.action}
 						autohide={this.state.toast.autoHide}
 						timeout={this.state.toast.timeout}
-						closeCallBk={this.closeToast}
+						onDismiss={this.closeToast}
 					/>
 				)}
 			</React.Fragment>

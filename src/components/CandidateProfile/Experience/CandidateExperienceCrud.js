@@ -42,7 +42,7 @@ const CandidateExperienceCrud = props => {
 				});
 			}
 		}
-		setShowCompany(!showCompany);
+		setShowCompany(true);
 	};
 
 	const handlePersonClick = async event => {
@@ -62,7 +62,7 @@ const CandidateExperienceCrud = props => {
 				});
 			}
 		}
-		setShowPerson(!showPerson);
+		setShowPerson(true);
 	};
 
 	const handleSkillsChange = skills => {
@@ -83,18 +83,22 @@ const CandidateExperienceCrud = props => {
 
 	const handleCompanyCancel = () => {
 		setShowCompany(false);
+		fetchCompanyFlag = false;
 	};
 
 	const handleCompanySubmit = () => {
 		setShowCompany(false);
+		fetchCompanyFlag = false;
 	};
 
 	const handlePersonCancel = () => {
 		setShowPerson(false);
+		fetchPersonFlag = false;
 	};
 
 	const handlePersonSubmit = personInfo => {
 		setShowPerson(false);
+		fetchPersonFlag = false;
 	};
 
 	return (

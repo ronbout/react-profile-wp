@@ -31,6 +31,7 @@ const CandidateCertificationCrudForm = props => {
 						id="certification-name"
 						name="name"
 						label="Certification Name *"
+						maxLength={60}
 						value={formFields.name}
 						autoFocus
 						required
@@ -41,6 +42,7 @@ const CandidateCertificationCrudForm = props => {
 						id="certification-description"
 						name="description"
 						label="Description"
+						maxLength={240}
 						value={formFields.description}
 					/>
 				</div>
@@ -50,6 +52,7 @@ const CandidateCertificationCrudForm = props => {
 						name="issueDate"
 						label="Issue Date"
 						className="date-entry"
+						monthYearOnly
 						value={formFields.issueDate}
 					/>
 				</div>
@@ -58,12 +61,17 @@ const CandidateCertificationCrudForm = props => {
 						id="certificate-img"
 						name="certificateImage"
 						label="Certification Image *"
+						maxLength={80}
 						value={formFields.certificateImage}
 					/>
 				</div>
 
 				<ExpansionList>
-					<ExpansionPanel label="Related Skills" footer={null}>
+					<ExpansionPanel
+						label="Related Skills"
+						footer={null}
+						defaultExpanded={true}
+					>
 						<div className="skill-edit-list">
 							<SkillList
 								skills={formFields.skills}
@@ -72,6 +80,7 @@ const CandidateCertificationCrudForm = props => {
 									changeFormFields("skills", s);
 								}}
 								candId={props.candId}
+								dispSearch={false}
 							/>
 						</div>
 					</ExpansionPanel>

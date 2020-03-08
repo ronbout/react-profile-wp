@@ -1,5 +1,5 @@
 /* SocialMediaContainer.js */
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { FormsProvider } from "components/forms/FormsContext";
 import SocialMediaForm from "./SocialMediaForm";
 import dataFetch from "assets/js/dataFetch";
@@ -19,10 +19,10 @@ const SocialMediaContainer = ({
 	const [linkedIn, setLinkedIn] = useState(linkedInLink);
 	const [github, setGithub] = useState(githubLink);
 
-	useEffect(() => {
-		setLinkedIn(linkedInLink);
-		setGithub(githubLink);
-	}, [linkedInLink, githubLink]);
+	// useEffect(() => {
+	// 	setLinkedIn(linkedInLink);
+	// 	setGithub(githubLink);
+	// }, [linkedInLink, githubLink]);
 
 	const handleSubmit = formData => {
 		postSocialMedia(formData);
@@ -47,16 +47,7 @@ const SocialMediaContainer = ({
 			setGithub(github);
 			const userMsg = "Social Media Links have been updated";
 			addToast(userMsg);
-			handleUpdate([
-				{
-					socialType: "LinkedIn",
-					socialLink: linkedIn
-				},
-				{
-					socialType: "Github",
-					socialLink: github
-				}
-			]);
+			handleUpdate(linkedIn, github);
 		}
 	};
 
@@ -83,7 +74,7 @@ const SocialMediaContainer = ({
 					action={toast.action}
 					autohide={toast.autoHide}
 					timeout={toast.timeout}
-					closeCallBk={closeToast}
+					onDismiss={closeToast}
 				/>
 			)}
 		</section>

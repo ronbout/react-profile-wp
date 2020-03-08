@@ -18,16 +18,18 @@ const SocialMediaForm = ({ formData, handleSubmit }) => {
 					id="linkedIn"
 					name="linkedIn"
 					label="LinkedIn"
+					maxLength={120}
 					value={formFields.linkedIn}
-					reqWarn={!formFields.github}
+					reqWarn={true}
 					autoFocus
 				/>
 				<InpString
 					id="github"
 					name="github"
 					label="Github"
+					maxLength={120}
 					value={formFields.github}
-					reqWarn={!formFields.linkedIn}
+					reqWarn={true}
 				/>
 			</div>
 			<div className="button-section">

@@ -1,0 +1,27 @@
+.candidate-experience .candidate-job {
+  min-height: 520px;
+  padding: 2em;
+}
+
+.candidate-experience .button-section {
+  text-align: center;
+}
+
+.experience-section {
+  margin: auto;
+  width: 95%;
+}
+
+.experience-list {
+  padding: 1em 2em 1em;
+}
+
+.salary-radio .md-selection-control-container {
+  display: inline-block;
+  width: 100px;
+}
+
+.date-entry {
+  min-width: 110px;
+}
+/*# sourceMappingURL=candidateExperience.css.map */

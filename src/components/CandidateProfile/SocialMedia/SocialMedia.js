@@ -1,13 +1,30 @@
 /* SocialMedia.js */
-import React from "react";
-import ProfileSectionHeader from "../ProfileSectionHeader";
+import React, { useContext } from "react";
 import SocialMediaContainer from "./SocialMediaContainer";
-import makeExpansion from "styledComponents/makeExpansion";
+import MakeExpansion from "components/expansionPanels/MakeExpansion";
+import { CompObjContext } from "components/CandidateProfile/CompObjContext";
 import { isEqual } from "lodash";
 
-const SocialMediaDiv = ({ linkedInLink, githubLink, candId, handleUpdate }) => {
-	const handleSubmit = socialMedia => {
-		handleUpdate({ socialMedia });
+const SocialMediaDiv = ({ linkedInLink, githubLink, candId }) => {
+	const { dispatch } = useContext(CompObjContext);
+
+	const handleSubmit = (linkedIn, github) => {
+		// instead of passing info up, use dispatch
+		dispatch({
+			type: "UPDATE_CAND",
+			payload: {
+				socialMedia: [
+					{
+						socialType: "LinkedIn",
+						socialLink: linkedIn
+					},
+					{
+						socialType: "Github",
+						socialLink: github
+					}
+				]
+			}
+		});
 	};
 
 	return (
@@ -22,35 +39,22 @@ const SocialMediaDiv = ({ linkedInLink, githubLink, candId, handleUpdate }) => {
 	);
 };
 
-const SocialMedia = ({ candId, linkedInLink, githubLink, handleUpdate }) => {
-	// React.useEffect(() => {
-	// 	console.log("***  Social Media rendered ***");
-	// });
-	const header = () => {
-		return (
-			<ProfileSectionHeader
-				headerTitle="Social Media Links"
-				profilePercentage="15"
-				profileSectionCompleted={false}
-			/>
-		);
-	};
+const ExpandSocialMediaDiv = MakeExpansion(
+	SocialMediaDiv,
+	"Social Media Links",
+	null,
+	false,
+	0,
+	"352px"
+);
 
-	const ExpandSocialMediaDiv = makeExpansion(
-		SocialMediaDiv,
-		header,
-		null,
-		false,
-		0
-	);
-
+const SocialMedia = ({ candId, linkedInLink, githubLink }) => {
 	return (
 		<section className="social profile-section">
 			<ExpandSocialMediaDiv
 				linkedInLink={linkedInLink}
 				githubLink={githubLink}
 				candId={candId}
-				handleUpdate={handleUpdate}
 			/>
 		</section>
 	);

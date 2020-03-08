@@ -1,5 +1,5 @@
 /* CandidateExperienceCrudForm.js */
-import React, { useState } from "react";
+import React from "react";
 import { useForm } from "components/forms/useForm";
 import {
 	InpString,
@@ -10,7 +10,7 @@ import {
 	InpRadio,
 	Form
 } from "components/forms/formInputs";
-import Checkbox from "styledComponents/Checkbox";
+import { FontIcon } from "styledComponents/FontIcon";
 import {
 	ExpansionList,
 	ExpansionPanel
@@ -21,6 +21,23 @@ import CompanySetupContainer from "components/CompanySetup/";
 import PersonSetup from "components/PersonSetup/";
 import MakePopup from "components/hoc/MakePopup";
 
+const emptyContactPerson = {
+	id: "",
+	formattedName: "",
+	givenName: "",
+	familyName: "",
+	mobilePhone: "",
+	workPhone: "",
+	addressLine1: "",
+	addressLine2: "",
+	municipality: "",
+	region: "",
+	postalCode: "",
+	countryCode: "",
+	email1: "",
+	website: ""
+};
+
 const CandidateExperienceCrudForm = props => {
 	const {
 		formFields,
@@ -29,21 +46,37 @@ const CandidateExperienceCrudForm = props => {
 		dirtyMsg,
 		changeFormFields
 	} = useForm(props.job, {}, props.handleSave);
-	const [currentJob, setCurrentJob] = useState(!formFields.endDate);
-	const [oldEndDate, setOldEndDate] = useState(formFields.endDate);
+	// const [currentJob, setCurrentJob] = useState(!formFields.endDate);
+	// const [oldEndDate, setOldEndDate] = useState(formFields.endDate);
 	const { showPerson, showCompany } = props;
 
 	const CompanyPopup = MakePopup(
 		CompanySetupContainer,
-		{ left: "250px", top: "200px", width: "1000px" },
+		{
+			left: "250px",
+			top: "10px",
+			width: 1000,
+			height: "95%",
+			overflowY: "auto"
+		},
 		true
 	);
 
 	const PersonPopup = MakePopup(
 		PersonSetup,
-		{ left: "250px", top: "200px", width: "1000px" },
+		{
+			left: "250px",
+			top: "10px",
+			width: 1000,
+			height: "95%",
+			overflowY: "auto"
+		},
 		true
 	);
+
+	const removeContactPerson = () => {
+		changeFormFields("contactPerson", emptyContactPerson);
+	};
 
 	const jobForm = () => {
 		return (
@@ -54,10 +87,13 @@ const CandidateExperienceCrudForm = props => {
 						name="jobTitle"
 						label="Job Title *"
 						value={formFields.jobTitle}
+						maxLength={60}
 						autoFocus
 						required
 						disabled={showPerson || showCompany}
 					/>
+				</div>
+				<div className="tsd-form-row">
 					<InpString
 						id="company"
 						name="company-name"
@@ -66,10 +102,10 @@ const CandidateExperienceCrudForm = props => {
 						onClick={props.handleCompanyClick}
 						onFocus={props.handleCompanyClick}
 						required
-						disabled={showPerson}
+						disabled={showPerson || showCompany}
 					/>
 				</div>
-				<div className="tsd-form-row">
+				<div className="tsd-form-row exp-summary">
 					<InpTextArea
 						id="exp-summary"
 						label="Summary"
@@ -87,8 +123,23 @@ const CandidateExperienceCrudForm = props => {
 						value={formFields.contactPerson.formattedName}
 						onClick={props.handlePersonClick}
 						onFocus={props.handlePersonClick}
-						disabled={showCompany}
+						disabled={showPerson || showCompany}
 					/>
+					{formFields.contactPerson.id &&
+						formFields.contactPerson.id !==
+							formFields.company.contactPersonId && (
+							<span
+								onClick={removeContactPerson}
+								style={{
+									cursor: "pointer",
+									padding: "0 20px 0 0",
+									alignSelf: "flex-end"
+								}}
+								title="Remove Contact Person"
+							>
+								(<FontIcon style={{ verticalAlign: "top" }}>remove</FontIcon>)
+							</span>
+						)}
 					<InpPhone
 						id="contactphone"
 						name="contactPerson-workPhone"
@@ -97,41 +148,26 @@ const CandidateExperienceCrudForm = props => {
 						disabled
 					/>
 				</div>
-				<div className="tsd-form-row">
+				<div className="tsd-form-row inp-date-row">
 					<InpDate
 						id="startDate"
 						name="startDate"
 						label="Start Date"
 						className="date-entry"
 						value={formFields.startDate}
+						monthYearOnly
 						required
 						disabled={showPerson || showCompany}
-					/>
-					<Checkbox
-						id="endDateCheck"
-						name="endDate"
-						label="Current Job"
-						value="currentJob"
-						style={{ paddingTop: "36px" }}
-						checked={currentJob}
-						onChange={(check, ev) => {
-							if (!check) {
-								formFields.endDate = oldEndDate;
-								changeFormFields("endDate", oldEndDate);
-							} else {
-								formFields.endDate && setOldEndDate(formFields.endDate);
-								changeFormFields("endDate", null);
-							}
-							setCurrentJob(check);
-						}}
 					/>
 					<InpDate
 						id="endDate"
 						name="endDate"
 						className="date-entry"
 						label="End Date"
-						value={currentJob ? null : formFields.endDate}
-						disabled={currentJob || showPerson || showCompany}
+						isClearable
+						value={formFields.endDate}
+						monthYearOnly
+						disabled={showPerson || showCompany}
 					/>
 				</div>
 				<div className="tsd-form-row">
@@ -153,10 +189,13 @@ const CandidateExperienceCrudForm = props => {
 						]}
 						disabled={showPerson || showCompany}
 					/>
+				</div>
+				<div className="tsd-form-row">
 					<InpTextAsNumber
 						id="startPay"
 						name="startPay"
 						label="Starting Pay"
+						max={9999999}
 						value={formFields.startPay}
 						disabled={showPerson || showCompany}
 					/>
@@ -164,12 +203,22 @@ const CandidateExperienceCrudForm = props => {
 						id="endPay"
 						name="endPay"
 						label="Ending Pay"
+						max={9999999}
 						value={formFields.endPay}
 						disabled={showPerson || showCompany}
 					/>
 				</div>
 				<ExpansionList>
-					<ExpansionPanel label="Job Related Skills" footer={null}>
+					<ExpansionPanel
+						label="Job Related Skills"
+						footer={null}
+						defaultExpanded={true}
+						headerStyle={{
+							fontSize: "20px",
+							fontFamily: '"Varela Round", sans-serif'
+						}}
+						style={{ width: 940 }}
+					>
 						<div className="skill-edit-list">
 							<SkillList
 								skills={formFields.skills}
@@ -178,10 +227,20 @@ const CandidateExperienceCrudForm = props => {
 									changeFormFields("skills", s);
 								}}
 								candId={props.candId}
+								dispSearch={false}
 							/>
 						</div>
 					</ExpansionPanel>
-					<ExpansionPanel label="Job Highlights" footer={null}>
+					<ExpansionPanel
+						label="Job Highlights"
+						footer={null}
+						defaultExpanded={true}
+						headerStyle={{
+							fontSize: "20px",
+							fontFamily: '"Varela Round", sans-serif'
+						}}
+						style={{ width: 940 }}
+					>
 						<div className="experience-highlights">
 							<HighlightsFormContainer
 								highlights={formFields.highlights}
@@ -192,6 +251,7 @@ const CandidateExperienceCrudForm = props => {
 								candId={props.candId}
 								disabled={showPerson || showCompany}
 								tableHeight={250}
+								setAutoFocus={false}
 							/>
 						</div>
 					</ExpansionPanel>

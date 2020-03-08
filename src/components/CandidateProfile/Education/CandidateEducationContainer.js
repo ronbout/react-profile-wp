@@ -1,5 +1,5 @@
 /* CandidateEducationContainer.js */
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import CandidateEducation from "./CandidateEducation";
 import Snackbar from "styledComponents/Snackbar";
 import Button from "styledComponents/Button";
@@ -37,14 +37,6 @@ const CandidateEducationContainer = props => {
 		skills: []
 	};
 
-	useEffect(() => {
-		setSortEducation(
-			props.education
-				? objCopy(props.education).sort((a, b) => a.startDate - b.startDate)
-				: []
-		);
-	}, [props.education]);
-
 	const addToast = (text, action, autoHide = true, timeout = null) => {
 		const toast = { text, action, autoHide, timeout };
 		setToast(toast);
@@ -67,12 +59,14 @@ const CandidateEducationContainer = props => {
 		if (result.error) {
 			console.log("fetch error: ", result);
 			addToast("An unknown error has occurred", "Close", false);
-			handleCancel();
+			return false;
 		} else {
 			addToast("Education has been updated");
 			setSortEducation(
 				education ? education.sort((a, b) => a.startDate - b.startDate) : []
 			);
+			props.handleSubmit(education);
+			return true;
 		}
 	};
 
@@ -87,9 +81,7 @@ const CandidateEducationContainer = props => {
 	const confirmedDelete = () => {
 		const tmp = objCopy(sortEducation.slice());
 		tmp.splice(delNdx, 1);
-		console.log("deleted education, if turned on: ", tmp);
 		updateEducation(tmp);
-		//alert("not actually deleting education until later in testing");
 		hideDelDialog();
 	};
 
@@ -113,11 +105,12 @@ const CandidateEducationContainer = props => {
 		setEditNdx(false);
 	};
 
-	const handleSave = ed => {
+	const handleSave = async ed => {
 		const tmp = objCopy(sortEducation.slice());
 		tmp[editNdx] = ed;
 		updateEducation(tmp);
-		handleCloseModal();
+		const tst = await updateEducation(tmp);
+		tst && handleCloseModal();
 	};
 
 	const handleAddNewEducation = () => {
@@ -129,11 +122,11 @@ const CandidateEducationContainer = props => {
 
 	const handleCancel = () => {
 		setEditNdx(false);
-		setSortEducation(
-			props.education
-				? objCopy(props.education).sort((a, b) => a.startDate - b.startDate)
-				: []
-		);
+		// setSortEducation(
+		// 	props.education
+		// 		? objCopy(props.education).sort((a, b) => a.startDate - b.startDate)
+		// 		: []
+		// );
 	};
 
 	const actions = {
@@ -174,7 +167,7 @@ const CandidateEducationContainer = props => {
 					action={toast.action}
 					autohide={toast.autoHide}
 					timeout={toast.timeout}
-					closeCallBk={closeToast}
+					onDismiss={closeToast}
 				/>
 			)}
 		</React.Fragment>

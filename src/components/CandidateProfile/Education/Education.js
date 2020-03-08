@@ -1,55 +1,44 @@
 /* Education.js */
-import React, { useState, useEffect } from "react";
-import ProfileSectionHeader from "../ProfileSectionHeader";
+import React, { useContext } from "react";
 import CandidateEducationContainer from "./CandidateEducationContainer";
-import { objCopy } from "assets/js/library.js";
-import makeExpansion from "styledComponents/makeExpansion";
+import MakeExpansion from "components/expansionPanels/MakeExpansion";
+import { CompObjContext } from "components/CandidateProfile/CompObjContext";
 import { isEqual } from "lodash";
 
-const EducationDiv = ({ education, candId, handleEducationChange }) => {
+const EducationDiv = ({ education, candId }) => {
+	const { dispatch } = useContext(CompObjContext);
+
+	const handleSubmit = education => {
+		dispatch({
+			type: "UPDATE_CAND",
+			payload: { education }
+		});
+	};
+
 	return (
 		<section>
 			<CandidateEducationContainer
 				education={education}
 				candId={candId}
-				handleEducationChange={handleEducationChange}
+				handleSubmit={handleSubmit}
 			/>
 		</section>
 	);
 };
 
-const Education = props => {
-	const [education, setEducation] = useState(objCopy(props.education));
+const ExpandEducationDiv = MakeExpansion(
+	EducationDiv,
+	"Education",
+	null,
+	false,
+	0,
+	"386px"
+);
 
-	// React.useEffect(() => {
-	// 	console.log("***  Education rendered ***");
-	// });
-
-	useEffect(() => {
-		setEducation(objCopy(props.education));
-	}, [props.education]);
-
-	const header = () => {
-		return (
-			<ProfileSectionHeader
-				headerTitle="Education"
-				profilePercentage="20"
-				profileSectionCompleted={true}
-			/>
-		);
-	};
-
-	const ExpandEducationDiv = makeExpansion(
-		EducationDiv,
-		header,
-		null,
-		false,
-		0
-	);
-
+const Education = ({ education, candId }) => {
 	return (
 		<section className="Education profile-section">
-			<ExpandEducationDiv education={education} candId={props.candId} />
+			<ExpandEducationDiv education={education} candId={candId} />
 		</section>
 	);
 };

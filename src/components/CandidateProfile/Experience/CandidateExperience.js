@@ -1,11 +1,16 @@
 /* CandidateExperience.js */
-import React from "react";
+import React, { useState, useEffect } from "react";
 import CandidateExperienceTable from "./CandidateExperienceTable";
 import CandidateExperienceCrud from "./CandidateExperienceCrud";
 import Modal from "components/Modal/";
 
 const CandidateExperience = props => {
-	const { sortJobs, actions, editNdx } = props;
+	const [sortJobs, setSortJobs] = useState(props.sortJobs);
+	const { actions, editNdx, handleAddNewJob } = props;
+
+	useEffect(() => {
+		setSortJobs(props.sortJobs);
+	}, [props.sortJobs]);
 
 	const experienceList = () => {
 		return (
@@ -13,7 +18,7 @@ const CandidateExperience = props => {
 				<CandidateExperienceTable
 					jobs={sortJobs}
 					actions={actions}
-					onAddClick={props.handleAddNewJob}
+					onAddClick={handleAddNewJob}
 				/>
 			</div>
 		);

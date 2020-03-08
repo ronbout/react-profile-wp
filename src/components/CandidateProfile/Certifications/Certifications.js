@@ -1,64 +1,44 @@
 /* Certification.js */
-import React, { useState, useEffect } from "react";
-import ProfileSectionHeader from "../ProfileSectionHeader";
+import React, { useContext } from "react";
 import CandidateCertificationContainer from "./CandidateCertificationsContainer";
-import { objCopy } from "assets/js/library.js";
-import makeExpansion from "styledComponents/makeExpansion";
+import MakeExpansion from "components/expansionPanels/MakeExpansion";
+import { CompObjContext } from "components/CandidateProfile/CompObjContext";
 import { isEqual } from "lodash";
 
-const CertificationDiv = ({
-	certifications,
-	candId,
-	handleCertificationChange
-}) => {
+const CertificationDiv = ({ certifications, candId }) => {
+	const { dispatch } = useContext(CompObjContext);
+
+	const handleSubmit = certifications => {
+		dispatch({
+			type: "UPDATE_CAND",
+			payload: { certifications }
+		});
+	};
+
 	return (
 		<section>
 			<CandidateCertificationContainer
 				certifications={certifications}
 				candId={candId}
-				handleCertificationChange={handleCertificationChange}
+				handleSubmit={handleSubmit}
 			/>
 		</section>
 	);
 };
 
-const Certifications = props => {
-	const [certifications, setCertification] = useState(
-		objCopy(props.certifications)
-	);
+const ExpandCertificationDiv = MakeExpansion(
+	CertificationDiv,
+	"Certifications",
+	null,
+	false,
+	0,
+	"386px"
+);
 
-	// React.useEffect(() => {
-	// 	console.log("***  Certs rendered ***");
-	// });
-
-	useEffect(() => {
-		setCertification(objCopy(props.certifications));
-	}, [props.certifications]);
-
-	const header = () => {
-		return (
-			<ProfileSectionHeader
-				headerTitle="Certifications"
-				profilePercentage="10"
-				profileSectionCompleted={true}
-			/>
-		);
-	};
-
-	const ExpandCertificationDiv = makeExpansion(
-		CertificationDiv,
-		header,
-		null,
-		false,
-		0
-	);
-
+const Certifications = ({ certifications, candId }) => {
 	return (
 		<section className="Certification profile-section">
-			<ExpandCertificationDiv
-				certifications={certifications}
-				candId={props.candId}
-			/>
+			<ExpandCertificationDiv certifications={certifications} candId={candId} />
 		</section>
 	);
 };

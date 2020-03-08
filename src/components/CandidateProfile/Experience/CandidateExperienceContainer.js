@@ -1,5 +1,5 @@
 /* CandidateExperienceContainer.js */
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import CandidateExperience from "./CandidateExperience";
 import Snackbar from "styledComponents/Snackbar";
 import Button from "styledComponents/Button";
@@ -60,14 +60,6 @@ const CandidateExperienceContainer = props => {
 		highlights: []
 	};
 
-	useEffect(() => {
-		setSortJobs(
-			props.experience
-				? objCopy(props.experience).sort((a, b) => a.startDate - b.startDate)
-				: []
-		);
-	}, [props.experience]);
-
 	const addToast = (text, action, autoHide = true, timeout = null) => {
 		const toast = { text, action, autoHide, timeout };
 		setToast(toast);
@@ -99,12 +91,14 @@ const CandidateExperienceContainer = props => {
 		if (result.error) {
 			console.log("fetch error: ", result);
 			addToast("An unknown error has occurred", "Close", false);
-			handleCancel();
+			return false;
 		} else {
 			addToast("Experience has been updated");
+			props.handleSubmit(experiences);
 			setSortJobs(
 				experiences ? experiences.sort((a, b) => a.startDate - b.startDate) : []
 			);
+			return true;
 		}
 	};
 
@@ -119,9 +113,7 @@ const CandidateExperienceContainer = props => {
 	const confirmedDelete = () => {
 		const tmp = objCopy(sortJobs.slice());
 		tmp.splice(delNdx, 1);
-		console.log("deleted experience, if turned on: ", tmp);
 		updateExperience(tmp);
-		//alert("not actually deleting experience until later in testing");
 		hideDelDialog();
 	};
 
@@ -145,11 +137,12 @@ const CandidateExperienceContainer = props => {
 		setEditNdx(false);
 	};
 
-	const handleSave = exp => {
+	const handleSave = async exp => {
 		const tmp = sortJobs.slice();
 		tmp[editNdx] = exp;
 		updateExperience(tmp);
-		handleCloseModal();
+		const tst = await updateExperience(tmp);
+		tst && handleCloseModal();
 	};
 
 	const handleAddNewJob = () => {
@@ -161,11 +154,11 @@ const CandidateExperienceContainer = props => {
 
 	const handleCancel = () => {
 		setEditNdx(false);
-		setSortJobs(
-			props.experience
-				? objCopy(props.experience).sort((a, b) => a.startDate - b.startDate)
-				: []
-		);
+		// setSortJobs(
+		// 	props.experience
+		// 		? objCopy(props.experience).sort((a, b) => a.startDate - b.startDate)
+		// 		: []
+		// );
 	};
 
 	const actions = {
@@ -206,7 +199,8 @@ const CandidateExperienceContainer = props => {
 					action={toast.action}
 					autohide={toast.autoHide}
 					timeout={toast.timeout}
-					closeCallBk={closeToast}
+					onDismiss={closeToast}
+					portal={true}
 				/>
 			)}
 		</React.Fragment>
