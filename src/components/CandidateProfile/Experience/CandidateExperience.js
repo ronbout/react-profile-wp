@@ -29,7 +29,10 @@ const CandidateExperience = props => {
 			width: "1080px",
 			height: "780px",
 			minWidth: "960px",
-			margin: "auto"
+			margin: "260px auto 50px"
+		},
+		modalContent: {
+			paddingBottom: "80px"
 		}
 	};
 
