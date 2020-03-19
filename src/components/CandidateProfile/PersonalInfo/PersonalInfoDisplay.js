@@ -8,19 +8,19 @@ const PersonalInfoDisplay = ({ formattedName, candId }) => {
 		<div className="personal-info-display">
 			<ProfileImg formattedName={formattedName} candId={candId} />
 			<div style={{ marginTop: "48px" }} className="pi-button">
-				<a href={`/bio/${candId}`}>
+				<a href={`/bio?candid=${candId}`}>
 					<Button type="button">View Bio Page</Button>
 				</a>
 			</div>
 			<br />
 			<div className="pi-button">
-				<a href={`/custom-resume/${candId}`}>
+				<a href={`/custom-resume?candid=${candId}`}>
 					<Button type="button">Resume PDF</Button>
 				</a>
 			</div>
 			<br />
 			<div className="pi-button">
-				<a href={`/cand-skills/${candId}`}>
+				<a href={`/cand-skills?candid=${candId}`}>
 					<Button type="button">Cand Skills</Button>
 				</a>
 			</div>
