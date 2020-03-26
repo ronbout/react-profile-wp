@@ -1,12 +1,13 @@
 // mixins
 //@import "../../../scss/mixins";
+@import "../../../scss/_tsd.scss";
 
 .company-main {
 	text-align: center;
 	margin-top: 2em;
 }
 
-.company-setup {
+div.company-setup {
 	//@include lg-form(15px);
 	font-size: 14px;
 	text-align: center;
