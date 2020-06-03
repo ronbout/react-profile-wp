@@ -11,7 +11,7 @@ import dataFetch from "assets/js/dataFetch";
 const API_CANDIDATES = "candidates/";
 const API_EXPERIENCE = "/experience";
 
-const CandidateExperienceContainer = props => {
+const CandidateExperienceContainer = (props) => {
 	const [delNdx, setDelNdx] = useState(-1);
 	const [editNdx, setEditNdx] = useState(false);
 	const [sortJobs, setSortJobs] = useState(
@@ -30,7 +30,7 @@ const CandidateExperienceContainer = props => {
 			description: "",
 			municipality: "",
 			region: "",
-			countryCode: ""
+			countryCode: "",
 		},
 		startDate: "",
 		endDate: "",
@@ -48,7 +48,7 @@ const CandidateExperienceContainer = props => {
 			postalCode: "",
 			countryCode: "",
 			email1: "",
-			website: ""
+			website: "",
 		},
 		payType: "Salary",
 		startPay: "",
@@ -57,7 +57,7 @@ const CandidateExperienceContainer = props => {
 		jobTitle: "",
 		summary: "",
 		skills: [],
-		highlights: []
+		highlights: [],
 	};
 
 	const addToast = (text, action, autoHide = true, timeout = null) => {
@@ -69,18 +69,18 @@ const CandidateExperienceContainer = props => {
 		setToast({});
 	};
 
-	const updateExperience = async experiences => {
+	const updateExperience = async (experiences) => {
 		closeToast();
 		let body = {
-			experience: objCopy(experiences).map(exp => {
+			experience: objCopy(experiences).map((exp) => {
 				const contactPersonId = exp.contactPerson ? exp.contactPerson.id : "";
 				const companyId = exp.company ? exp.company.id : "";
 				return {
 					...exp,
 					contactPersonId,
-					companyId
+					companyId,
 				};
-			})
+			}),
 		};
 
 		const id = props.candId;
@@ -102,7 +102,7 @@ const CandidateExperienceContainer = props => {
 		}
 	};
 
-	const handleDelExperience = ndx => {
+	const handleDelExperience = (ndx) => {
 		setDelNdx(ndx);
 	};
 
@@ -126,10 +126,10 @@ const CandidateExperienceContainer = props => {
 			onClick={confirmedDelete}
 		>
 			Delete
-		</Button>
+		</Button>,
 	];
 
-	const handleDispEditModal = ndx => {
+	const handleDispEditModal = (ndx) => {
 		setEditNdx(ndx);
 	};
 
@@ -137,10 +137,9 @@ const CandidateExperienceContainer = props => {
 		setEditNdx(false);
 	};
 
-	const handleSave = async exp => {
+	const handleSave = async (exp) => {
 		const tmp = sortJobs.slice();
 		tmp[editNdx] = exp;
-		updateExperience(tmp);
 		const tst = await updateExperience(tmp);
 		tst && handleCloseModal();
 	};
@@ -163,7 +162,7 @@ const CandidateExperienceContainer = props => {
 
 	const actions = {
 		delete: handleDelExperience,
-		edit: handleDispEditModal
+		edit: handleDispEditModal,
 	};
 
 	return (
