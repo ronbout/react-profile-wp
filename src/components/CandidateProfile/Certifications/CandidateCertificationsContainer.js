@@ -89,10 +89,12 @@ const CandidateCertificationsContainer = (props) => {
 
 	const handleDispEditModal = (ndx) => {
 		setEditNdx(ndx);
+		props.setShowSkills && props.setShowSkills(false);
 	};
 
 	const handleCloseModal = () => {
 		setEditNdx(false);
+		props.setShowSkills && props.setShowSkills(true);
 	};
 
 	const handleSave = async (cert) => {
@@ -107,13 +109,12 @@ const CandidateCertificationsContainer = (props) => {
 		// set editNdx to this new element
 		certifications.push(emptyCertification);
 		setEditNdx(certifications.length - 1);
+		props.setShowSkills && props.setShowSkills(false);
 	};
 
 	const handleCancel = () => {
 		setEditNdx(false);
-		// setCertifications(
-		// 	props.certifications ? objCopy(props.certifications) : []
-		// );
+		props.setShowSkills && props.setShowSkills(true);
 	};
 
 	const actions = {
@@ -132,6 +133,7 @@ const CandidateCertificationsContainer = (props) => {
 				handleSave={handleSave}
 				handleCancel={handleCancel}
 				candId={props.candId}
+				updateCertifications={updateCertifications}
 			/>
 			<DialogContainer
 				id="delete-dialog"

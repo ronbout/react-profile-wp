@@ -14,10 +14,23 @@ import { objCopy } from "assets/js/library";
 import dataFetch from "assets/js/dataFetch";
 import { UserContext } from "components/UserProvider";
 import { CompObjProvider } from "./CompObjContext";
+import SkillSearchContainer from "components/search/SkillSearch/";
+import MakePopup from "components/hoc/MakePopup";
 
 import "./css/candidateProfile.css";
 
 const API_CANDIDATES = "candidates";
+
+const SkillSearchPopup = MakePopup(
+	SkillSearchContainer,
+	{
+		right: "60px",
+		top: "152px",
+		width: "344px",
+		borderRadius: "20px",
+	},
+	true
+);
 
 class CandidateProfile extends Component {
 	static contextType = UserContext;
@@ -25,7 +38,7 @@ class CandidateProfile extends Component {
 		super(props, context);
 
 		const candId =
-			window.tsdData && window.tsdData.candId ? window.tsdData.candId : 7;
+			window.tsdData && window.tsdData.candId ? window.tsdData.candId : 8;
 		// in wp user security is completely different
 		//let authValue = this.context;
 		let errMsg = "";
@@ -48,7 +61,8 @@ class CandidateProfile extends Component {
 		this.state = {
 			formFields: candidateInfo,
 			candId,
-			errMsg
+			errMsg,
+			showSkills: true,
 		};
 		this.state.origForm = objCopy(this.state.formFields);
 	}
@@ -59,7 +73,7 @@ class CandidateProfile extends Component {
 			this.loadCandidateInfo(this.state.candId);
 	}
 
-	loadCandidateInfo = async candId => {
+	loadCandidateInfo = async (candId) => {
 		const endpoint = `${API_CANDIDATES}/${candId}`;
 		const candidateApiInfo = await dataFetch(endpoint);
 		if (candidateApiInfo.error) {
@@ -73,9 +87,13 @@ class CandidateProfile extends Component {
 			const formFields = candidateApiInfo ? candidateApiInfo : candidateInfo;
 			this.setState({
 				formFields,
-				origForm: objCopy(formFields)
+				origForm: objCopy(formFields),
 			});
 		}
+	};
+
+	setShowSkills = (flag) => {
+		this.setState({ showSkills: flag });
 	};
 
 	render() {
@@ -106,31 +124,35 @@ class CandidateProfile extends Component {
 										<Highlights
 											highlights={this.state.formFields.candidateHighlights}
 											candId={this.state.candId}
+											setShowSkills={this.setShowSkills}
 										/>
 										<Experience
 											experience={this.state.formFields.experience}
 											candId={this.state.candId}
+											setShowSkills={this.setShowSkills}
 										/>
 										<Education
 											education={this.state.formFields.education}
 											candId={this.state.candId}
+											setShowSkills={this.setShowSkills}
 										/>
 										<Certifications
 											certifications={this.state.formFields.certifications}
 											candId={this.state.candId}
+											setShowSkills={this.setShowSkills}
 										/>
 										<SocialMedia
 											linkedInLink={
 												socialMedia[
 													socialMedia.findIndex(
-														sm => sm.socialType === "LinkedIn"
+														(sm) => sm.socialType === "LinkedIn"
 													)
 												].socialLink
 											}
 											githubLink={
 												socialMedia[
 													socialMedia.findIndex(
-														sm => sm.socialType === "Github"
+														(sm) => sm.socialType === "Github"
 													)
 												].socialLink
 											}
@@ -138,6 +160,17 @@ class CandidateProfile extends Component {
 										/>
 									</ExpansionList>
 								</div>
+								<SkillSearchPopup
+									editMode="1"
+									searchButton="Add Skill"
+									forceRefresh={false}
+									handleSkillSelect={() => null}
+									handleSkillStartDrag={() => null}
+									closeBtn={() => null}
+									hideButtons={true}
+									profileFlag={true}
+									visibility={this.state.showSkills ? "visible" : "hidden"}
+								/>
 							</React.Fragment>
 						) : (
 							<h2>Loading Candidate data...</h2>

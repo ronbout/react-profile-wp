@@ -99,10 +99,12 @@ const CandidateEducationContainer = (props) => {
 
 	const handleDispEditModal = (ndx) => {
 		setEditNdx(ndx);
+		props.setShowSkills && props.setShowSkills(false);
 	};
 
 	const handleCloseModal = () => {
 		setEditNdx(false);
+		props.setShowSkills && props.setShowSkills(true);
 	};
 
 	const handleSave = async (ed) => {
@@ -117,15 +119,12 @@ const CandidateEducationContainer = (props) => {
 		// set editNdx to this new element
 		sortEducation.push(emptyEducation);
 		setEditNdx(sortEducation.length - 1);
+		props.setShowSkills && props.setShowSkills(false);
 	};
 
 	const handleCancel = () => {
 		setEditNdx(false);
-		// setSortEducation(
-		// 	props.education
-		// 		? objCopy(props.education).sort((a, b) => a.startDate - b.startDate)
-		// 		: []
-		// );
+		props.setShowSkills && props.setShowSkills(true);
 	};
 
 	const actions = {
@@ -143,6 +142,7 @@ const CandidateEducationContainer = (props) => {
 				handleSave={handleSave}
 				handleCancel={handleCancel}
 				candId={props.candId}
+				updateEducation={updateEducation}
 			/>
 			<DialogContainer
 				id="delete-dialog"
